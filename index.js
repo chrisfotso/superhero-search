@@ -14,13 +14,13 @@ app.use(express.json());
 //Redirecting all API calls to use the API router
 app.use('/api/quotes', quoteRouter);
 
-const initServer = () => {
+function initServer() {
   return app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
 }
 
-const initDB = async() => {
+async function initDB() {
   try {
     await mongoose.connect(DB_URL, {useNewUrlParser: true});
     console.log('Connected to database')
