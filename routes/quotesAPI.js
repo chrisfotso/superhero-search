@@ -9,7 +9,11 @@ const {
 } = require('./functions/quotes')
 
 router.post('/', async (req, res) => {
-  const { quoteId, character, quote } = req.body;
+  const {
+    quoteId,
+    character,
+    quote
+  } = req.body;
 
   if (!quoteId || !character || !quote) {
     res.status(400).send({
@@ -18,13 +22,20 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    const newQuote = {quoteId, character, quote}
+    const newQuote = {
+      quoteId,
+      character,
+      quote
+    }
     const savedQuote = await Quote.create(newQuote);
-    
+
     return res.status(201).send(savedQuote);
 
   } catch (error) {
-    res.status(500).send({msg: 'Unknown error occured', error})
+    res.status(500).send({
+      msg: 'Unknown error occured',
+      error
+    })
   }
 })
 
@@ -46,7 +57,9 @@ router.get('/id/:id', (req, res) => {
 
 router.get('/random/qty/:num?', (req, res) => {
   const [smallestId, largestId] = [0, dummyQuotes.length - 1];
-  let desiredQuoteCount = req.params.num ? Number(req.params.num) : 1;
+  const result = [];
+  const desiredQuoteCount = req.params.num ? Number(req.params.num) : 1
+  let quoteCount = 0;
 
   if (isNaN(desiredQuoteCount)) {
     return res.status(400).send({
@@ -54,29 +67,22 @@ router.get('/random/qty/:num?', (req, res) => {
     })
   }
 
-  if (desiredQuoteCount === 1) {
+  while (quoteCount < desiredQuoteCount) {
     const id = getRandomIndex(smallestId, largestId);
-
-    return res.status(200).send(dummyQuotes[id]);
-
-  } else {
-    const result = []
-
-    while (desiredQuoteCount > 0) {
-      const id = getRandomIndex(smallestId, largestId);
-      result.push(dummyQuotes[id]);
-      desiredQuoteCount--;
-    }
-
-    return res.status(200).send(result);
+    result.push(dummyQuotes[id]);
+    quoteCount++;
   }
+
+  return desiredQuoteCount > 1 
+          ? res.status(200).send(result) 
+          : res.status(200).send(result[0]);
 })
 
 router.get('/random/character', (req, res) => {
-  const { name } = req.query
-  
-  const filteredQuotes = dummyQuotes.filter(({ character} ) => name.toLowerCase() === character.toLowerCase());
-  
+  const {name} = req.query
+
+  const filteredQuotes = dummyQuotes.filter(({character}) => name.toLowerCase() === character.toLowerCase());
+
   const [smallestIndex, largestIndex] = [0, filteredQuotes.length - 1];
   const randomQuoteIndex = getRandomIndex(smallestIndex, largestIndex);
 
@@ -84,8 +90,9 @@ router.get('/random/character', (req, res) => {
 })
 
 router.get('/character', (req, res) => {
-  const { name } = req.query
-  const filteredQuotes = dummyQuotes.filter(({ character} ) => name.toLowerCase() === character.toLowerCase());
+  const {name} = req.query
+  
+  const filteredQuotes = dummyQuotes.filter(({character}) => name.toLowerCase() === character.toLowerCase());
 
   res.send(filteredQuotes);
 })
