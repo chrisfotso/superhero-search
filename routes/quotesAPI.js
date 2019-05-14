@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const dummyQuotes = require('../dummyQuotes');
+
 const {
   getRandomIndex
 } = require('./functions/quotes')
@@ -10,7 +11,7 @@ router.get('/', (req, res) => {
   res.status(200).send(dummyQuotes);
 })
 
-router.get('/:id', (req, res) => {
+router.get('/id/:id', (req, res) => {
   const resultArr = dummyQuotes.filter(quote => quote.id === Number(req.params.id));
 
   if (!resultArr.length) {
@@ -22,10 +23,10 @@ router.get('/:id', (req, res) => {
   return res.status(200).send(resultArr[0]);
 })
 
-router.get('/random/:num', (req, res) => {
+router.get('/random/:num?', (req, res) => {
   const [smallestId, largestId] = [0, dummyQuotes.length - 1];
 
-  const desiredQuoteCount = Number(req.params.num)
+  const desiredQuoteCount = req.params.num ? Number(req.params.num) : 1;
   let quoteCount = 0;
 
   if (desiredQuoteCount === 1) {
@@ -44,7 +45,13 @@ router.get('/random/:num', (req, res) => {
 
     return res.status(200).send(result);
   }
+})
 
+router.get('/character', (req, res) => {
+  const { name } = req.query
+  const filteredQuotes = dummyQuotes.filter(({ character }) => name.toLowerCase() === character.toLowerCase());
+
+  res.send(filteredQuotes);
 })
 
 module.exports = router;
