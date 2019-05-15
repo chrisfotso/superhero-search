@@ -12,29 +12,26 @@ const {
 //DESCRIPTION: Adds quote to Mongo database
 router.post('/', async (req, res) => {
   const {
-    quoteId,
     character,
     quote
   } = req.body;
 
-  if (!quoteId || !character || !quote) {
-    res.status(400).send({
-      err: 'Please enter a quote ID, character name, and quote'
+  if (!character || !quote) {
+    return res.status(400).send({
+      err: 'Please enter a character name, and quote'
     })
   }
 
   try {
     const newQuote = {
-      quoteId,
       character,
       quote
     }
+    
     const savedQuote = await Quote.create(newQuote);
-
     return res.status(201).send(savedQuote);
-
   } catch (error) {
-    res.status(500).send({
+    return res.status(500).send({
       msg: 'Unknown error occured',
       error
     })
@@ -44,7 +41,7 @@ router.post('/', async (req, res) => {
 //METHOD: GET
 //DESCRIPTION: Returns all quotes
 router.get('/', (req, res) => {
-  res.status(200).send(dummyQuotes);
+  return res.status(200).send(dummyQuotes);
 })
 
 //METHOD: GET
@@ -111,7 +108,7 @@ router.get('/character', (req, res) => {
   
   const filteredQuotes = dummyQuotes.filter(({character}) => name.toLowerCase() === character.toLowerCase());
 
-  res.send(filteredQuotes);
+  return res.send(filteredQuotes);
 })
 
 module.exports = router;

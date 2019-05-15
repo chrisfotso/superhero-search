@@ -18,7 +18,8 @@
   "homepage": "https://github.com/chrisfotso/superhero-search#readme",
   "dependencies": {
     "express": "^4.16.4",
-    "mongoose": "^5.5.7"
+    "mongoose": "^5.5.7",
+    "mongoose-auto-increment": "^5.0.1"
   },
   "devDependencies": {}
 }

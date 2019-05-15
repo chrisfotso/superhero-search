@@ -14,20 +14,16 @@ app.use(express.json());
 //Redirecting all API calls to use the API router
 app.use('/api/quotes', quoteRouter);
 
-function initServer() {
+const initServer = () => {
   return app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
 }
 
-async function initDB() {
-  try {
-    await mongoose.connect(DB_URL, {useNewUrlParser: true});
-    console.log('Connected to database')
-  }
-  catch (err) {
-    console.error(err)
-  }
+const initDB = () => {
+  return mongoose.connect(DB_URL, {useNewUrlParser: true, useFindAndModify: false, useCreateIndex: true})
+          .then(() => console.log('Connected to database'))
+          .catch(e => console.error(e))
 }
 
 initServer();
