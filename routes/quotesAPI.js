@@ -43,6 +43,7 @@ router.get("/", async (req, res) => {
 //METHOD: GET
 //DESCRIPTION: Returns one quote with the specified id number
 //PARAMETER 'id': id of the quote you want to get
+//EXAMPLE: /api/quotes/id/3
 router.get("/id/:id", async (req, res) => {
   if (isNaN(Number(req.params.id))) {
     return res.status(400).send({
@@ -64,7 +65,9 @@ router.get("/id/:id", async (req, res) => {
 //METHOD: GET
 //DESCRIPTION: Returns a specified number of random quotes
 //PARAMETER 'num': number of random quotes you want to get
-//                 if parameter 'num' is left out, one random quote is returned
+//                 If parameter 'num' is left out, one random quote is returned
+//                 Quotes may repeat
+//EXAMPLE: /api/quotes/random/qty/4
 router.get("/random/qty/:num?", async (req, res) => {
   const [smallestId, largestId] = await getQuoteIdRange();
   const result = [];
@@ -92,6 +95,7 @@ router.get("/random/qty/:num?", async (req, res) => {
 //METHOD: GET
 //DESCRIPTION: Returns one random quote from a specified character
 //QUERY PARAMETER 'name': name of whatever character you want a random quote from
+//EXAMPLE: /api/quotes/random/character?name=spiderman
 router.get("/random/character", async (req, res) => {
   const { name } = req.query;
   const quotesByCharacter = await getQuotesByCharacter(name);
@@ -111,6 +115,7 @@ router.get("/random/character", async (req, res) => {
 //METHOD: GET
 //DESCRIPTION: Returns all quotes from specified character
 //QUERY PARAMETER 'name': name of whatever character you want a random quote from
+//EXAMPLE: /api/quotes/character?name=captainamerica
 router.get("/character", async (req, res) => {
   const { name } = req.query;
   const quotesByCharacter = await getQuotesByCharacter(name);
