@@ -30,4 +30,17 @@ const getQuoteIdRange = async () => {
   return [minId, maxId];
 };
 
-module.exports = { getRandomIndex, findQuoteById, getQuoteIdRange };
+const getQuotesByCharacter = async characterName => {
+  const quotesFromCharacter = await Quote.find({
+    character: new RegExp(characterName, "i")
+  }).exec();
+
+  return quotesFromCharacter;
+};
+
+module.exports = {
+  getRandomIndex,
+  findQuoteById,
+  getQuoteIdRange,
+  getQuotesByCharacter
+};

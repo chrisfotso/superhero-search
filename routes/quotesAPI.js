@@ -7,7 +7,8 @@ const Quote = require("../models/Quote");
 const {
   getRandomIndex,
   findQuoteById,
-  getQuoteIdRange
+  getQuoteIdRange,
+  getQuotesByCharacter
 } = require("./functions/quotes");
 
 //METHOD: POST
@@ -92,30 +93,36 @@ router.get("/random/qty/:num?", async (req, res) => {
 //METHOD: GET
 //DESCRIPTION: Returns one random quote from a specified character
 //QUERY PARAMETER 'name': name of whatever character you want a random quote from
-router.get("/random/character", (req, res) => {
+router.get("/random/character", async (req, res) => {
   const { name } = req.query;
+  const quotesByCharacter = await getQuotesByCharacter(name);
 
-  const filteredQuotes = dummyQuotes.filter(
-    ({ character }) => name.toLowerCase() === character.toLowerCase()
-  );
+  if (!quotesByCharacter.length) {
+    return res.status(404).send({
+      err: `No quotes found by character named ${name}`
+    });
+  }
 
-  const [smallestIndex, largestIndex] = [0, filteredQuotes.length - 1];
+  const [smallestIndex, largestIndex] = [0, quotesByCharacter.length - 1];
   const randomQuoteIndex = getRandomIndex(smallestIndex, largestIndex);
 
-  return res.status(200).send(filteredQuotes[randomQuoteIndex]);
+  return res.status(200).send(quotesByCharacter[randomQuoteIndex]);
 });
 
 //METHOD: GET
 //DESCRIPTION: Returns all quotes from specified character
 //QUERY PARAMETER 'name': name of whatever character you want a random quote from
-router.get("/character", (req, res) => {
+router.get("/character", async (req, res) => {
   const { name } = req.query;
+  const quotesByCharacter = await getQuotesByCharacter(name);
 
-  const filteredQuotes = dummyQuotes.filter(
-    ({ character }) => name.toLowerCase() === character.toLowerCase()
-  );
+  if (!quotesByCharacter.length) {
+    return res.status(404).send({
+      err: `No quotes found by character named ${name}`
+    });
+  }
 
-  return res.send(filteredQuotes);
+  return res.send(quotesByCharacter);
 });
 
 module.exports = router;
