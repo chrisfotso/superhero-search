@@ -31,11 +31,11 @@ const getQuoteIdRange = async () => {
 };
 
 const getQuotesByCharacter = async characterName => {
-  const quotesFromCharacter = await Quote.find({
+  const quotesByCharacter = await Quote.find({
     character: new RegExp(characterName, "i")
   }).exec();
 
-  return quotesFromCharacter;
+  return quotesByCharacter;
 };
 
 module.exports = {
