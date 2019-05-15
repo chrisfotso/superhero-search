@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-const dummyQuotes = require("../dummyQuotes");
 const Quote = require("../models/Quote");
 
 const {
@@ -18,7 +17,7 @@ router.post("/", async (req, res) => {
 
   if (!character || !quote) {
     return res.status(400).send({
-      err: "Please enter a character name and a quote"
+      err: "Please enter a character name and a quote."
     });
   }
 
@@ -28,7 +27,7 @@ router.post("/", async (req, res) => {
     return res.status(201).send(savedQuote);
   } catch (error) {
     return res.status(500).send({
-      msg: "Unknown error occured",
+      msg: "Unknown error occured.",
       error
     });
   }
@@ -47,7 +46,7 @@ router.get("/", async (req, res) => {
 router.get("/id/:id", async (req, res) => {
   if (isNaN(Number(req.params.id))) {
     return res.status(400).send({
-      err: `Parameter 'id' must have numerical characters only`
+      err: `Parameter 'id' must have numerical characters only.`
     });
   }
 
@@ -74,7 +73,7 @@ router.get("/random/qty/:num?", async (req, res) => {
 
   if (isNaN(desiredQuoteCount)) {
     return res.status(400).send({
-      err: "The quantity must not have any non-number characters"
+      err: `Parameter 'num' must have numerical characters only.`
     });
   }
 
@@ -99,7 +98,7 @@ router.get("/random/character", async (req, res) => {
 
   if (!quotesByCharacter.length) {
     return res.status(404).send({
-      err: `No quotes found by character named ${name}`
+      err: `No quotes found by character named ${name}.`
     });
   }
 
@@ -118,7 +117,7 @@ router.get("/character", async (req, res) => {
 
   if (!quotesByCharacter.length) {
     return res.status(404).send({
-      err: `No quotes found by character named ${name}`
+      err: `No quotes found by character named ${name}.`
     });
   }
 
