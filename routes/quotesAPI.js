@@ -4,7 +4,11 @@ const router = express.Router();
 const dummyQuotes = require("../dummyQuotes");
 const Quote = require("../models/Quote");
 
-const { getRandomIndex, findQuoteById } = require("./functions/quotes");
+const {
+  getRandomIndex,
+  findQuoteById,
+  getQuoteIdRange
+} = require("./functions/quotes");
 
 //METHOD: POST
 //DESCRIPTION: Adds quote to Mongo database
@@ -61,8 +65,8 @@ router.get("/id/:id", async (req, res) => {
 //DESCRIPTION: Returns a specified number of random quotes
 //PARAMETER 'num': number of random quotes you want to get
 //                 if parameter 'num' is left out, one random quote is returned
-router.get("/random/qty/:num?", (req, res) => {
-  const [smallestId, largestId] = [0, dummyQuotes.length - 1];
+router.get("/random/qty/:num?", async (req, res) => {
+  const [smallestId, largestId] = await getQuoteIdRange();
   const result = [];
   const desiredQuoteCount = req.params.num ? Number(req.params.num) : 1;
   let quoteCount = 0;
@@ -75,7 +79,8 @@ router.get("/random/qty/:num?", (req, res) => {
 
   while (quoteCount < desiredQuoteCount) {
     const id = getRandomIndex(smallestId, largestId);
-    result.push(dummyQuotes[id]);
+    const quote = await findQuoteById(id);
+    result.push(quote);
     quoteCount++;
   }
 

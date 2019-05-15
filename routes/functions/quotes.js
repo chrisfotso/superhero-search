@@ -9,4 +9,25 @@ const findQuoteById = async id => {
   return quote;
 };
 
-module.exports = { getRandomIndex, findQuoteById };
+const getQuoteIdRange = async () => {
+  const olderDoc = Quote.findOne({})
+    .sort({ quoteId: "asc" })
+    .limit(1)
+    .select("quoteId")
+    .exec();
+
+  const recentDoc = Quote.findOne({})
+    .sort({ quoteId: "desc" })
+    .limit(1)
+    .select("quoteId")
+    .exec();
+
+  const [{ quoteId: minId }, { quoteId: maxId }] = await Promise.all([
+    olderDoc,
+    recentDoc
+  ]);
+
+  return [minId, maxId];
+};
+
+module.exports = { getRandomIndex, findQuoteById, getQuoteIdRange };
