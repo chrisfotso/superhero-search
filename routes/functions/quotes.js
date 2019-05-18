@@ -10,21 +10,21 @@ const findQuoteById = async id => {
 };
 
 const getQuoteIdRange = async () => {
-  const olderDoc = Quote.findOne({})
+  const oldestDoc = Quote.findOne({})
     .sort({ quoteId: "asc" })
     .limit(1)
     .select("quoteId")
     .exec();
 
-  const recentDoc = Quote.findOne({})
+  const newestDoc = Quote.findOne({})
     .sort({ quoteId: "desc" })
     .limit(1)
     .select("quoteId")
     .exec();
 
   const [{ quoteId: minId }, { quoteId: maxId }] = await Promise.all([
-    olderDoc,
-    recentDoc
+    oldestDoc,
+    newestDoc
   ]);
 
   return [minId, maxId];
