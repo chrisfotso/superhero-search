@@ -45,9 +45,9 @@ router.get("/", async (req, res) => {
 //PARAMETER 'id': id of the quote you want to get
 //EXAMPLE: /api/quotes/id/3
 router.get("/id/:id", async (req, res) => {
-  if (isNaN(Number(req.params.id))) {
+  if (isNaN(Number(req.params.id)) || !req.params.id) {
     return res.status(400).send({
-      err: `Parameter 'id' must have numerical characters only.`
+      err: `Please do not omit parameter 'id' and ensure it only has numerical characters`
     });
   }
 
@@ -98,6 +98,13 @@ router.get("/random/qty/:num?", async (req, res) => {
 //EXAMPLE: /api/quotes/random/character?name=spiderman
 router.get("/random/character", async (req, res) => {
   const { name } = req.query;
+
+  if (!name) {
+    return res.status(400).send({
+      err: "Please enter a character name"
+    });
+  }
+
   const quotesByCharacter = await getQuotesByCharacter(name);
 
   if (!quotesByCharacter.length) {
@@ -118,6 +125,13 @@ router.get("/random/character", async (req, res) => {
 //EXAMPLE: /api/quotes/character?name=captainamerica
 router.get("/character", async (req, res) => {
   const { name } = req.query;
+
+  if (!name) {
+    return res.status(400).send({
+      err: "Please enter a character name"
+    });
+  }
+
   const quotesByCharacter = await getQuotesByCharacter(name);
 
   if (!quotesByCharacter.length) {
