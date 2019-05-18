@@ -9,27 +9,45 @@ Deployed on Heroku for use by anyone: https://superhero-search.herokuapp.com
 ### Endpoints
 
 * `/` or `/api/quotes` - Retrieves all quotes
+
 * `/api/quotes/id/:id` - Retrieves the quote with the `quoteId` specified in the `id` parameter
+
     * Example: `/api/quotes/id/4`
+
 * `/api/quotes/random/qty/:num` - Retrieves a specified number of random quotes
+
     * If parameter `num` is omitted, one random quote will be returned by default
+    
         * Quotes may repeat.
+    
     * Example: `/api/quotes/random/qty/6`
+
 * `/api/quotes/random/character?name` - Returns one random quote by the character specified in the `name` query parameter
+    
     * The `name` query parameter is case-insensitive
+    
     * Example: `/api/quotes/random/character?name=ironMan`
+
 * `/api/quotes/character?name` - Retrieves all quotes by the character specified in the `name` query parameter
+    
     * The `name` query parameter is case-insensitive
+    
     * Example: `/api/quotes/character?name=captainAmerica`
 
 ### Characters
 
 * Iron Man - `ironMan`
+
 * Captain America - `captainAmerica`
+
 * Thor - `thor`
+
 * Hulk - `hulk`
+
 * Spider-Man - `spiderMan`
+
 * Black Panther - `blackPanther`
+
 * Thanos - `thanos`
 
 ## Getting Started
