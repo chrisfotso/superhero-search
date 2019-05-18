@@ -1,5 +1,10 @@
 const Quote = require("../../models/Quote");
 
+const getAllQuotes = async (req, res) => {
+  const quotes = await Quote.find({}).exec();
+  return res.status(200).send(quotes);
+};
+
 const getRandomIndex = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
@@ -42,5 +47,6 @@ module.exports = {
   getRandomIndex,
   findQuoteById,
   getQuoteIdRange,
-  getQuotesByCharacter
+  getQuotesByCharacter,
+  getAllQuotes
 };

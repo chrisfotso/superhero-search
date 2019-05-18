@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const { DB_URL } = require("./config");
+const { getAllQuotes } = require("./routes/functions/quotes");
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 
 //Redirecting all API calls to use the API router
 app.use("/api/quotes", quoteRouter);
+app.get("/", getAllQuotes);
 
 const initServer = () => {
   return app.listen(port, () => {
