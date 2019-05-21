@@ -1,6 +1,6 @@
 # Superhero Search
 
-Superhero search is an API I created for quotes from Marvel Cinematic Universe characters.
+Superhero Search is an API for quotes from Marvel Cinematic Universe characters.
 
 Deployed on Heroku for use by anyone (may take 10 or so seconds to load due to Heroku's restrictions): https://superhero-search.herokuapp.com
 
